@@ -2,42 +2,69 @@ using System;
 
 namespace calculator_dotnet
 {
-    public class ConsoleCalculator : ICalculatorOperations
+    public class ConsoleCalculator
     {
         private bool _isRunning = true;
-
+        private Calculator _calculator;
+        private enum CalcOperations
+        {
+            Quit = -1,
+            Add = 1,
+            Subtract = 2,
+            Multiply = 3,
+            Divide = 4,
+            POW = 5,
+        }
         public void Quit()
         {
             _isRunning = false;
         }
+
+        private void PrintTutorial()
+        {
+            Console.WriteLine("Enter a number listed below to use the calculators functions.");
+            foreach(var value in Enum.GetValues<CalcOperations>())
+            {
+                var name = Enum.GetName<CalcOperations>(value);
+                Console.WriteLine($"{name} {(int)value}");
+            }
+        }
         public void Run()
         {
             Console.WriteLine("Calculator");
-            ConsoleCalculator calculator = new ConsoleCalculator();
-            const string tutorial = "Addition, enter 1\n" +
-                                    "Subtract, enter 2\n" +
-                                    "Multiply, enter 3\n" +
-                                    "Divide,enter 4\n"+
-                                    "To quit the program, enter -1\n";
+            _calculator = new Calculator();
+            
             while (_isRunning)
             {
-                int operation;
                 // parse fail error check
                 Console.Clear();
-                Console.WriteLine(tutorial);
+                PrintTutorial();
+                int operation;
+                Console.Write("Select a number:");
                 if (!int.TryParse(Console.ReadLine(), out operation))
                 {
                     Console.WriteLine("Please enter a number");
                     continue;
                 }
-                
-                switch (operation)
+                switch ((CalcOperations)operation)
                 {
-                    case -1:
+                    case CalcOperations.Quit:
                         Quit();
                         break;
-                    case 1:
-                        Console.WriteLine(calculator.Add(GetNumberFromUser() , GetNumberFromUser()));
+                    case CalcOperations.Add:
+                        Addition();
+                        break;
+                    case CalcOperations.Subtract:
+                        Subtraction();
+                        break;
+                    case CalcOperations.Multiply:
+                        Multiplication();
+                        break;
+                    case CalcOperations.Divide:
+                        Division();
+                        break;
+                    case CalcOperations.POW:
+                        PowerOf();
                         break;
                     default:
                         Console.WriteLine("Unknown Operation");
@@ -57,34 +84,85 @@ namespace calculator_dotnet
             }
             return num;
         }
-        public double Add(double x, double y)
+        
+        public void Addition()
         {
-            return x + y;
+            double x, y , result;
+            Console.Clear();
+            Console.WriteLine("Addition");
+            Console.WriteLine("Enter two numbers to add together.");
+            x = GetNumberFromUser();
+            y = GetNumberFromUser();
+            result = _calculator.Add(x, y);
+            Console.WriteLine($"{x} + {y} = {result}");
+            Console.ReadKey();
+            Console.Clear();
         }
 
-        public double Subtract(double x, double y)
+        public void Subtraction()
         {
-            return x - y;
+            double x, y , result;
+            Console.Clear();
+            Console.WriteLine("Subtraction");
+            Console.WriteLine("Enter two numbers to subtract.");
+            x = GetNumberFromUser();
+            y = GetNumberFromUser();
+            result = _calculator.Subtract(x, y);
+            Console.WriteLine($"{x} - {y} = {result}");
+            Console.ReadKey();
+            Console.Clear();
         }
 
-        public double Divide(double x, double y)
+        public void Multiplication()
         {
-            if (y == 0)
+            double x, y , result;
+            Console.Clear();
+            Console.WriteLine("Multiplication");
+            Console.WriteLine("Enter two numbers to multiply together.");
+            x = GetNumberFromUser();
+            y = GetNumberFromUser();
+            result = _calculator.Multiply(x, y);
+            Console.WriteLine($"{x} * {y} = {result}");
+            Console.ReadKey();
+            Console.Clear();
+        }
+
+        public void Division()
+        {
+            double x, y , result;
+            Console.Clear();
+            Console.WriteLine("Division");
+            Console.WriteLine("Enter two numbers to divide.");
+            x = GetNumberFromUser();
+            y = GetNumberFromUser();
+            try
             {
-                throw new DivideByZeroException("Cannot divide by zero.");
+                result = _calculator.Divide(x, y);
+                Console.WriteLine($"{x} / {y} = {result}");
+            }
+            catch (DivideByZeroException e)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(e.Message);
+                Console.ResetColor();
             }
 
-            return x / y;
+            Console.ReadKey();
         }
 
-        public double Multiply(double x, double y)
+        public void PowerOf()
         {
-            return x * y;
+            double x, y , result;
+            Console.Clear();
+            Console.WriteLine("Power of");
+            Console.WriteLine("Enter two numbers the first number is the base and the second the exponent.");
+            x = GetNumberFromUser();
+            y = GetNumberFromUser();
+            result = _calculator.PowerOf(x, y);
+            Console.WriteLine($"{x}^{y} = {result}");
+            Console.ReadKey();
+            Console.Clear();
         }
-
-        public double PowerOf(double x, double y)
-        {
-            return Math.Pow(x,y);
-        }
+        
     }
 }
