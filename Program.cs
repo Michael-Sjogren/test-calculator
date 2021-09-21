@@ -1,12 +1,11 @@
-﻿using System;
-
-namespace dotnetcore
+﻿
+namespace calculator_dotnet
 {
     class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            new ConsoleCalculator().Run();
         }
     }
 }
