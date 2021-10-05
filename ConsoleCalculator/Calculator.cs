@@ -11,7 +11,11 @@ namespace TestCalculator
 
         public double Add(double [] numbers)
         {
-            return numbers.Sum();
+            if(numbers.Length == 0)
+            {
+                return 0;
+            }
+            return numbers.Aggregate( (x , y) => Add(x,y));
         }
 
         public double Subtract(double x, double y)
@@ -21,7 +25,11 @@ namespace TestCalculator
 
         public double Subtract(double [] numbers)
         {
-            return numbers.Aggregate((x,y) => x -y );
+            if(numbers.Length == 0)
+            {
+                return 0;
+            }
+            return numbers.Aggregate((x,y) => Subtract(x,y) );
         }
 
         public double Divide(double x, double y)
