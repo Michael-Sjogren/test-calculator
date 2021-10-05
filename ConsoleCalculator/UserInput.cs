@@ -39,7 +39,7 @@ namespace TestCalculator
             
             if(entries.Length == 0)
             {
-                return new double[]{};
+                return Array.Empty<double>();
             }
 
             var numbers = new List<double>(entries.Length);

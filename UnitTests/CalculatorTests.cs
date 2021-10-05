@@ -20,7 +20,7 @@ namespace UnitTests
         {
             _calc = new Calculator();
             double result = _calc.Divide(10 , 5);
-            Assert.Equal(result , 2);
+            Assert.Equal(2 , result , 4);
         }
 
         [Theory]
@@ -29,11 +29,11 @@ namespace UnitTests
         [InlineData( new double[]{double.MaxValue,2,3} , double.MaxValue -6 )]
         [InlineData( new double[]{double.MinValue,2,3} , double.MinValue )]
         [InlineData( new double[]{double.NegativeInfinity,double.MaxValue,3} , double.NegativeInfinity )]
-        public void SubtractServeralNumbers(double[] numbers , double expected)
+        public void SubtractNumbers(double[] numbers , double expected)
         {
             _calc = new Calculator();
             double result = _calc.Subtract(numbers);
-            Assert.Equal(result , expected);
+            Assert.Equal(expected , result , 4);
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace UnitTests
         {
             _calc = new Calculator();
             double result = _calc.PowerOf(2,2);
-            Assert.Equal(result , 4);
+            Assert.Equal(4 , result , 4);
         }
 
         [Fact]
@@ -49,7 +49,7 @@ namespace UnitTests
         {
             _calc = new Calculator();
             double result = _calc.Multiply(4,2);
-            Assert.Equal(result , 8);
+            Assert.Equal(8 , result , 4);
         }
 
         [Fact]
@@ -57,18 +57,18 @@ namespace UnitTests
         {
             _calc = new Calculator();
             double result = _calc.Add(2,2);
-            Assert.Equal(result , 4);
+            Assert.Equal(4 , result , 4);
         }
         
         [Theory]
         [InlineData( new double[]{} , 0 )]
         [InlineData( new double[]{1,2,3} , 6 )]
         [InlineData( new double[]{double.NaN,2,3} , double.NaN )]
-        public void AddServeralNumbers(double[] numbers , double expected)
+        public void AddNumbers(double[] numbers , double expected)
         {
             _calc = new Calculator();
             double result = _calc.Add(numbers);
-            Assert.Equal(result , expected);
+            Assert.Equal(expected , result , 4);
         }
     }
 }
