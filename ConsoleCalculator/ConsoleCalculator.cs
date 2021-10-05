@@ -6,14 +6,21 @@ namespace TestCalculator
     {
         private bool _isRunning = true;
         private Calculator _calculator;
+        private UserInput _input;
         private enum CalcOperations
         {
-            Quit = -1,
+            Quit = 6,
             Add = 1,
             Subtract = 2,
             Multiply = 3,
             Divide = 4,
             POW = 5,
+        }
+
+        public ConsoleCalculator()
+        {
+            _calculator = new Calculator();
+            _input = new UserInput();
         }
         public void Quit()
         {
@@ -26,13 +33,12 @@ namespace TestCalculator
             foreach(var value in Enum.GetValues<CalcOperations>())
             {
                 var name = Enum.GetName<CalcOperations>(value);
-                Console.WriteLine($"{name} {(int)value}");
+                Console.WriteLine($"{(int)value}.\t{name}");
             }
         }
         public void Run()
         {
             Console.WriteLine("Calculator");
-            _calculator = new Calculator();
             
             while (_isRunning)
             {
@@ -73,54 +79,51 @@ namespace TestCalculator
             }
             Console.WriteLine("Shutting Down...");
         }
-
-        private double GetNumberFromUser()
-        {
-            Console.Write("Input a number:");
-            double num;
-            if (!double.TryParse(Console.ReadLine(), out num))
-            {
-                Console.WriteLine("Not a number");
-            }
-            return num;
-        }
         
         public void Addition()
         {
-            double x, y , result;
+            double result;
             Console.Clear();
             Console.WriteLine("Addition");
-            Console.WriteLine("Enter two numbers to add together.");
-            x = GetNumberFromUser();
-            y = GetNumberFromUser();
-            result = _calculator.Add(x, y);
-            Console.WriteLine($"{x} + {y} = {result}");
+            Console.WriteLine("Enter two or more numbers to add. Example: '1,2,3,4'");
+            var nums = GetNumbers();
+            result = _calculator.Add(nums);
+            Console.WriteLine($"{result}");
             Console.ReadKey();
             Console.Clear();
         }
 
         public void Subtraction()
         {
-            double x, y , result;
+            double result;
             Console.Clear();
             Console.WriteLine("Subtraction");
-            Console.WriteLine("Enter two numbers to subtract.");
-            x = GetNumberFromUser();
-            y = GetNumberFromUser();
-            result = _calculator.Subtract(x, y);
-            Console.WriteLine($"{x} - {y} = {result}");
+            Console.WriteLine("Enter two or more numbers to subtract. Example: '1,2,3,4'");
+            var nums = GetNumbers();
+            
+            result = _calculator.Subtract(nums);
+            Console.WriteLine($"{result}");
             Console.ReadKey();
             Console.Clear();
         }
 
+        private double[] GetNumbers()
+        {
+            return _input.GetNumbersFromString(_input.GetUserInput() , ',');
+        }
+        private double GetNumber()
+        {
+            Console.Write("Enter a number: ");
+            return _input.GetNumberFromString(_input.GetUserInput());
+        }
         public void Multiplication()
         {
             double x, y , result;
             Console.Clear();
             Console.WriteLine("Multiplication");
-            Console.WriteLine("Enter two numbers to multiply together.");
-            x = GetNumberFromUser();
-            y = GetNumberFromUser();
+            Console.WriteLine("Enter two numbers with to multiply together.");
+            x = GetNumber();
+            y = GetNumber();
             result = _calculator.Multiply(x, y);
             Console.WriteLine($"{x} * {y} = {result}");
             Console.ReadKey();
@@ -133,8 +136,8 @@ namespace TestCalculator
             Console.Clear();
             Console.WriteLine("Division");
             Console.WriteLine("Enter two numbers to divide.");
-            x = GetNumberFromUser();
-            y = GetNumberFromUser();
+            x = GetNumber();
+            y = GetNumber();
             try
             {
                 result = _calculator.Divide(x, y);
@@ -156,8 +159,8 @@ namespace TestCalculator
             Console.Clear();
             Console.WriteLine("Power of");
             Console.WriteLine("Enter two numbers the first number is the base and the second the exponent.");
-            x = GetNumberFromUser();
-            y = GetNumberFromUser();
+            x = GetNumber();
+            y = GetNumber();
             result = _calculator.PowerOf(x, y);
             Console.WriteLine($"{x}^{y} = {result}");
             Console.ReadKey();
